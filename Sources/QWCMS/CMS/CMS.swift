@@ -14,76 +14,50 @@ import FluentPostgreSQL
 ///
 /// Base building struct for the CMS
 ///
-/// All CMSModules should first be added to the CMS with `addModule(_:)`
+/// - All CMSModules should first be added to the CMS with `addModule(_:)`
+/// - Then the `CMS.setup()` method has to be called
 ///
-/// The initializer is responsible for the following tasks:
-/// - making an adminRouter
-/// - (re)loading all settings
-///
-public struct CMSProvider: Provider {
-    public init() {}
-    
-    public func register(_ services: inout Services) throws {
-        // registeer alles wat we nodig hebben
-        try services.register(LeafProvider())
-        try services.register(FluentPostgreSQLProvider())
-    }
-    
-    public func willBoot(_ container: Container) throws -> EventLoopFuture<Void> {
-        
-        // we're done
-        return .done(on: container)
-    }
-    
-    public func didBoot(_ container: Container) throws -> EventLoopFuture<Void> {
-        // load all modules
-//        let cms: CMS = try container.make()
-//        try cms.loadModules(on: container)
-        
-        // we're done
-        return .done(on: container)
-    }
-
-}
-
 public struct CMS: Service {
     
-    /// Alle modules
+    /// List of modules in the CMS
     ///
-    /// Alle CMS-modules worden hier verzameld
     public var modules = [CMSModule]()
-    
-    /// Router
-    ///
-    /// First the baseRouter `Router`
-    /// This is the base router from Vapor
-    //    private let router: Router
-    /// Now the adminRouter
-    //    private let adminRouter: Router
     
     /// CMS Config
     private let config: CMSConfig
     
-    
     /// Init
     public init(config: CMSConfig) {
         self.config = config
+        
+        // add base modules
+        addModule(AdminModule())
     }
     
-    /// Voeg een module toe aan het CMS
+    /// Add a module to the CMS
     ///
-    /// *Meestal in configure.php*
+    /// Do this after initializing the CMS, but before registering it as a service
     ///
-    /// - parameter module: Een voorgedefinieerde `CMSModule`
+    /// - parameter module: A initialized `CMSModule`
     mutating public func addModule(_ module: CMSModule) {
-        // onthouden
+        // save the module in our list
         modules.append(module)
-        
-        
-        // routes toevoegen
-        //        module.addRoutes(to: router)
     }
     
+    /// Setup the CMS
+    ///
+    /// This method will do a couple of things:
+    /// - Make the `MigrationConfig`
+    ///     - let all registered modules add migrations and models to it
+    ///     - register the MigrationConfig with Vapor
+    /// - Make a CMSRouter
+    ///     - let all registered modules add routes to it
+    ///     - register the CMSRouter with Vapor
+    ///     - tell Vapor to use the CSMRouter as default Router
+    ///
+    /// - Parameter config: Vapor Config
+    /// - Parameter env: Environment
+    /// - Parameter services: Vapor Services
     public func setup(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
         
         // load migrations
@@ -96,7 +70,7 @@ public struct CMS: Service {
         services.register(migrationConfig)
         
         
-        let router = CMSRouter()
+        let router = CMSRouter(adminRoutePrefix: self.config.adminRoutesPrefix)
         
         for module in modules {
             try module.addRoutes(to: router)
@@ -107,13 +81,5 @@ public struct CMS: Service {
         // Use the CMSRouter for routing
         config.prefer(CMSRouter.self, for: Router.self)
     }
-    
-//    func loadModules(on container: Container) throws {
-//        let router: CMSRouter = try container.make()
-//        
-//        modules.forEach { module in
-//            try module.addRoutes(to: router)
-//        }
-//    }
 }
 
