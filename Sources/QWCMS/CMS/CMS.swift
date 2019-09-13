@@ -69,7 +69,7 @@ public struct CMS: Service {
         
         services.register(migrationConfig)
         
-        
+        // setup the CMSRouter
         let router = CMSRouter(adminRoutePrefix: self.config.adminRoutesPrefix)
         
         for module in modules {
@@ -80,6 +80,20 @@ public struct CMS: Service {
         
         // Use the CMSRouter for routing
         config.prefer(CMSRouter.self, for: Router.self)
+        
+        // register custom tags
+        var leafTagConfig = LeafTagConfig.default()
+        
+        // this two are baked in:
+        leafTagConfig.use(EmbedAssetTag(), as: "embedAsset")
+        leafTagConfig.use(IncludeAssetTag(), as: "includeAsset")
+        
+        // now lets see if any modules have tags
+        for module in modules {
+            try module.addCustomLeafTag(to: &leafTagConfig)
+        }
+        
+        services.register(leafTagConfig)
     }
 }
 

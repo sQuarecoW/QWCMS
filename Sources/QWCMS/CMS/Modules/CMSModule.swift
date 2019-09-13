@@ -8,6 +8,7 @@
 import Foundation
 import Vapor
 import Fluent
+import Leaf
 
 public protocol CMSModule {
     
@@ -37,6 +38,15 @@ public protocol CMSModule {
     ///
     /// - Parameter router: QWCMS `CMSRouter`
     func addRoutes(to router: CMSRouter) throws
+    
+    /// Add custom Leaf Tags
+    ///
+    /// Add custom Leaf Tags to the `LeafTagConfig` config
+    ///
+    /// - note: This function will be called from `CMS > setup`
+    ///
+    /// - Parameter leafTagConfig: The initialized but not yet registered `LeafTagConfig`
+    func addCustomLeafTag(to leafTagConfig: inout LeafTagConfig) throws
 }
 
 
@@ -46,5 +56,9 @@ extension CMSModule {
         return String(describing: self)
     }
     
+    /// Predefined func, not all modules need this
     public func addMigrations(to migrationConfig: inout MigrationConfig) throws {}
+    
+    /// Predefined func, not all modules need this
+    public func addCustomLeafTag(to leafTagConfig: inout LeafTagConfig) throws {}
 }

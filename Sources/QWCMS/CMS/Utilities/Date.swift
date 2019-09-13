@@ -11,18 +11,21 @@ extension Date {
     
     /// Return a Calendar Component for this date
     /// - Parameter component: The requested Calendar Component
-    func component(_ component: Calendar.Component) -> Int {
+    public func component(_ component: Calendar.Component) -> Int {
         return Calendar.current.component(component, from: self)
+    }
+    
+    /// Compare this date to another date to see if they are the same day
+    public func isSameDay(as date: Date) -> Bool {
+        return Calendar.current.isDate(self, inSameDayAs: date)
     }
 }
 
-/// An Dictionary of dates grouped by week
-typealias DatesByWeek = [Int: [Date]]
-
 extension Array where Element == Date {
     
-    var groupedDates: DatesByWeek {
-        var grouped = DatesByWeek()
+    /// An Dictionary of dates grouped by week
+    public var datesByWeek: [Int: [Date]] {
+        var grouped: [Int: [Date]] = [:]
         
         for date in self {
             grouped[date.component(.weekOfYear), default: []].append(date)

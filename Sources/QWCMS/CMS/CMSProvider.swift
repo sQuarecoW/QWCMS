@@ -23,15 +23,7 @@ public struct CMSProvider: Provider {
         services.register(AssetManager())
         // current request values
         services.register(CurrentRequest())
-        
-        // custom leaf tags
-        services.register { container -> LeafTagConfig in
-            var config = LeafTagConfig.default()
-            config.use(EmbedAssetTag(), as: "embedAsset")
-            config.use(IncludeAssetTag(), as: "includeAsset")
-            return config
-        }
-        
+         
         // all our middlewares
         services.register { container -> MiddlewareConfig in
             var middleware = MiddlewareConfig()
