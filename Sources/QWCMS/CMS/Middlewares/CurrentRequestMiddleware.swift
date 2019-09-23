@@ -11,8 +11,13 @@ import Vapor
 struct CurrentRequestMiddleware: Middleware {
     
     func respond(to request: Request, chainingTo next: Responder) throws -> EventLoopFuture<Response> {
-        var currentRequest: CurrentRequest = try request.privateContainer.make()
-        currentRequest.language = request.http.headers[canonicalForm: "Accept-Language"]
+        let currentRequest: CurrentRequest = try request.privateContainer.make()
+        
+        // select the first language
+        currentRequest.language = request.http.headers[canonicalForm: "Accept-Language"].first ?? ""
+        currentRequest.host = request.http.headers.firstValue(name: .host) ?? ""
+        
+        dump(request.http.headers)
         
         return try next.respond(to: request)
     }

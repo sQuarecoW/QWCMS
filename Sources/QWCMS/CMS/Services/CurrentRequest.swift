@@ -7,9 +7,23 @@
 
 import Vapor
 
-public struct CurrentRequest: Service {
+public class CurrentRequest: Service {
     
-    var language: [String] = []
+    var language: String = ""
+    var host: String = ""
     
     public init() {}
+    
+    var userInfo: [AnyHashable: Any] {
+        let mirror = Mirror(reflecting: self)
+        var userInfo: [AnyHashable: Any] = [:]
+        
+        for (k, v) in mirror.children {
+            if let key = k {
+                userInfo[key] = v
+            }
+        }
+        
+        return userInfo
+    }
 }

@@ -23,15 +23,19 @@ public struct CMSProvider: Provider {
         services.register(AssetManager())
         // current request values
         services.register(CurrentRequest())
+        services.register(CurrentRequestMiddleware())
          
         // all our middlewares
-        services.register { container -> MiddlewareConfig in
-            var middleware = MiddlewareConfig()
-            // register your custom middleware here
-            middleware.use(CurrentRequestMiddleware.self)
-            return middleware
-        }
+        var middlewares = MiddlewareConfig() // Create _empty_ middleware config
+        // Vapor middlewares
+        middlewares.use(FileMiddleware.self) // Serves files from `Public/` directory
+        middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
         
+        // our custom middleware
+        middlewares.use(CurrentRequestMiddleware.self)
+        
+        // register them
+        services.register(middlewares)
     }
     
     public func willBoot(_ container: Container) throws -> EventLoopFuture<Void> {

@@ -87,6 +87,7 @@ public struct CMS: Service {
         // this two are baked in:
         leafTagConfig.use(EmbedAssetTag(), as: "embedAsset")
         leafTagConfig.use(IncludeAssetTag(), as: "includeAsset")
+        leafTagConfig.use(UserInfoTag(), as: "userInfo")
         
         // now lets see if any modules have tags
         for module in modules {
