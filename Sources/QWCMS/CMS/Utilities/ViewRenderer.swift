@@ -9,10 +9,12 @@ import Vapor
 
 extension ViewRenderer {
     
+    public func render(_ path: String, on req: Request) throws -> Future<View> {
+        return try render(path, Dictionary<String, String>(), on: req)
+    }
+    
     public func render<E>(_ path: String, _ context: E, on req: Request) throws -> Future<View> where E: Encodable {
         let currentRequest: CurrentRequest = try req.privateContainer.make()
-        
-        dump(currentRequest)
         
         return render(path, context, userInfo: currentRequest.userInfo)
     }
