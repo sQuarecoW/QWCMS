@@ -84,10 +84,11 @@ public struct CMS: Service {
         // register custom tags
         var leafTagConfig = LeafTagConfig.default()
         
-        // this two are baked in:
+        // these are baked in:
         leafTagConfig.use(EmbedAssetTag(), as: "embedAsset")
         leafTagConfig.use(IncludeAssetTag(), as: "includeAsset")
         leafTagConfig.use(UserInfoTag(), as: "userInfo")
+        leafTagConfig.use(BSModalTag(), as: "bsModal")
         
         // now lets see if any modules have tags
         for module in modules {
