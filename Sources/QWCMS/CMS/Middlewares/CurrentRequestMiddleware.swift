@@ -17,8 +17,6 @@ struct CurrentRequestMiddleware: Middleware {
         currentRequest.language = request.http.headers[canonicalForm: "Accept-Language"].first ?? ""
         currentRequest.host = request.http.headers.firstValue(name: .host) ?? ""
         
-        dump(request.http.headers)
-        
         return try next.respond(to: request)
     }
 }
