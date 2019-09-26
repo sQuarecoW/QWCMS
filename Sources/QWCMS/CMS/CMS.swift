@@ -88,7 +88,9 @@ public struct CMS: Service {
         leafTagConfig.use(EmbedAssetTag(), as: "embedAsset")
         leafTagConfig.use(IncludeAssetTag(), as: "includeAsset")
         leafTagConfig.use(UserInfoTag(), as: "userInfo")
+        // bootstrap
         leafTagConfig.use(BSModalTag(), as: "bsModal")
+        leafTagConfig.use(BSBreadcrumbsTag(), as: "bsBreadcrumbs")
         
         // now lets see if any modules have tags
         for module in modules {
