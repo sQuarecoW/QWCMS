@@ -9,7 +9,7 @@ import Foundation
 import Vapor
 
 /// Extra dingen voor als een module ook via het admin gedeelte beheerd kan worden
-public protocol CMSAdminModule {
+public protocol CMSAdminModule: CMSModule {
     
     /// Dashboard label
     ///
@@ -20,9 +20,23 @@ public protocol CMSAdminModule {
     ///
     /// Links voor in het admin-dashboard
     var adminLinks: [AdminLink] { get }
+    
+    /// Generate breadcrumbs for the current view
+    func getBreadcrumbs(adding item: PageLink) -> [PageLink]
 }
 
-
+extension CMSAdminModule {
+    
+    public func getBreadcrumbs(adding item: PageLink) -> [PageLink] {
+        var breadcrumbs: [PageLink] = []
+        breadcrumbs.append(PageLink(title: "Dashboard", href: "admin"))
+        breadcrumbs.append(PageLink(title: self.dashboardLabel, href: "admin/\(self.routePrefix)"))
+        
+        breadcrumbs.append(item)
+        
+        return breadcrumbs
+    }
+}
 
 
 /// AdminViewContext
