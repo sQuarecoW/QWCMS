@@ -22,19 +22,26 @@ public protocol CMSAdminModule: CMSModule {
     var adminLinks: [AdminLink] { get }
     
     /// Generate breadcrumbs for the current view
+    func getBreadcrumbs(adding items: [PageLink]) -> [PageLink]
+    
+    ///
     func getBreadcrumbs(adding item: PageLink) -> [PageLink]
 }
 
 extension CMSAdminModule {
     
-    public func getBreadcrumbs(adding item: PageLink) -> [PageLink] {
+    public func getBreadcrumbs(adding items: [PageLink]) -> [PageLink] {
         var breadcrumbs: [PageLink] = []
         breadcrumbs.append(PageLink(title: "Dashboard", href: "admin"))
         breadcrumbs.append(PageLink(title: self.dashboardLabel, href: "admin/\(self.routePrefix)"))
         
-        breadcrumbs.append(item)
+        breadcrumbs.append(contentsOf: items)
         
         return breadcrumbs
+    }
+    
+    public func getBreadcrumbs(adding item: PageLink) -> [PageLink] {
+        return getBreadcrumbs(adding: [item])
     }
 }
 
