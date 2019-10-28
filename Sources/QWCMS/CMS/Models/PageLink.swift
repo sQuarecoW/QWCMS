@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct PageLink: Encodable {
+public struct PageLink: Codable {
     let title: String
     let href: String
     
