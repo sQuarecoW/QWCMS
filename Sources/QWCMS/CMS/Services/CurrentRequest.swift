@@ -10,7 +10,11 @@ import Vapor
 public class CurrentRequest: Service {
     
     var language: String = ""
+    
+    var httpProtocol: String = "http://"
     var host: String = ""
+    
+    var siteUrl: String = ""
     
     public init() {}
     

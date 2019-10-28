@@ -12,10 +12,14 @@ struct CurrentRequestMiddleware: Middleware {
     
     func respond(to request: Request, chainingTo next: Responder) throws -> EventLoopFuture<Response> {
         let currentRequest: CurrentRequest = try request.privateContainer.make()
-        print("url scheme: \(request.http.url.scheme)")
+        
         // select the first language
         currentRequest.language = request.http.headers[canonicalForm: "Accept-Language"].first ?? ""
+        
+        currentRequest.httpProtocol = Environment.get("HTTP_PROTOCOL") ?? "http"
         currentRequest.host = request.http.headers.firstValue(name: .host) ?? ""
+        
+        currentRequest.siteUrl = currentRequest.httpProtocol + "://" + currentRequest.host
         
         return try next.respond(to: request)
     }
