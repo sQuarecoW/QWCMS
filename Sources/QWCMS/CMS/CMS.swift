@@ -88,6 +88,7 @@ public struct CMS: Service {
         leafTagConfig.use(EmbedAssetTag(), as: "embedAsset")
         leafTagConfig.use(IncludeAssetTag(), as: "includeAsset")
         leafTagConfig.use(UserInfoTag(), as: "userInfo")
+        leafTagConfig.use(DatePickerTag(), as: "datePicker")
         // bootstrap
         leafTagConfig.use(BSModalTag(), as: "bsModal")
         leafTagConfig.use(BSBreadcrumbsTag(), as: "bsBreadcrumbs")
