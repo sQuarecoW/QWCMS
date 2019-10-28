@@ -19,6 +19,14 @@ extension Date {
     public func isSameDay(as date: Date) -> Bool {
         return Calendar.current.isDate(self, inSameDayAs: date)
     }
+    
+    /// Convenience init for Date as supplied by JavaScript
+    /// JS uses milliseconds as the unit of measurement
+    ///
+    /// See this MDN articel for reference: [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTime)
+    public init (millisecondsSince1970: Int) {
+        self.init(timeIntervalSince1970: TimeInterval(millisecondsSince1970 / 1000))
+    }
 }
 
 extension Array where Element == Date {
