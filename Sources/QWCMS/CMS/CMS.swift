@@ -90,6 +90,7 @@ public struct CMS: Service {
         leafTagConfig.use(UserInfoTag(), as: "userInfo")
         leafTagConfig.use(DatePickerTag(), as: "datePicker")
         leafTagConfig.use(HTMLTableTag(), as: "parseHTMLTable")
+        leafTagConfig.use(Nl2brTag(), as: "nl2br")
         // bootstrap
         leafTagConfig.use(BSModalTag(), as: "bsModal")
         leafTagConfig.use(BSBreadcrumbsTag(), as: "bsBreadcrumbs")
