@@ -22,8 +22,11 @@ final class AssetManager: Service {
         
         if let assetsData = fileManager.contents(atPath: URL(fileURLWithPath: directoryConfig.workDir).appendingPathComponent("Public/assets/manifest.json").path) {
 
-            let result = try JSONDecoder().decode([Asset].self, from: assetsData)
-            available = result
+            do {
+                available = try JSONDecoder().decode([Asset].self, from: assetsData)
+            } catch let error {
+                print(error)
+            }
         }
     }
     
