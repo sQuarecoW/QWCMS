@@ -30,12 +30,27 @@ public struct CMSProvider: Provider {
         // Vapor middlewares
         middlewares.use(FileMiddleware.self) // Serves files from `Public/` directory
         middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
+        middlewares.use(SessionsMiddleware.self) // Makes sessions available
         
         // our custom middleware
         middlewares.use(CurrentRequestMiddleware.self)
         
         // register them
         services.register(middlewares)
+        
+//        /// Create default content config
+//        var contentConfig = ContentConfig.default()
+//
+//        /// Create custom JSON encoder
+//        let jsonEncoder = JSONEncoder()
+//        jsonEncoder.dateEncodingStrategy = .millisecondsSince1970
+//        let jsonDecoder = JSONDecoder()
+//        jsonDecoder.dateDecodingStrategy = .millisecondsSince1970
+//
+//        /// Register JSON encoder and content config
+//        contentConfig.use(encoder: jsonEncoder, for: .json)
+//        contentConfig.use(decoder: jsonDecoder, for: .json)
+//        services.register(contentConfig)
     }
     
     public func willBoot(_ container: Container) throws -> EventLoopFuture<Void> {
