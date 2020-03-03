@@ -8,9 +8,9 @@
 import Foundation
 import Vapor
 
-struct CurrentRequestMiddleware: Middleware {
+public struct CurrentRequestMiddleware: Middleware {
     
-    func respond(to request: Request, chainingTo next: Responder) throws -> EventLoopFuture<Response> {
+    public func respond(to request: Request, chainingTo next: Responder) throws -> EventLoopFuture<Response> {
         let currentRequest: CurrentRequest = try request.privateContainer.make()
         
         // select the first language
@@ -27,7 +27,7 @@ struct CurrentRequestMiddleware: Middleware {
 
 extension CurrentRequestMiddleware: ServiceType {
     /// See `ServiceType`.
-    static func makeService(for container: Container) throws -> CurrentRequestMiddleware {
+    public static func makeService(for container: Container) throws -> CurrentRequestMiddleware {
         return .init()
     }
 }
