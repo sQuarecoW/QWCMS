@@ -9,6 +9,7 @@ import Foundation
 import Vapor
 import Leaf
 import FluentPostgreSQL
+import Redis
 
 ///
 public struct CMSProvider: Provider {
@@ -18,6 +19,11 @@ public struct CMSProvider: Provider {
         // registeer alles wat we nodig hebben
         try services.register(LeafProvider())
         try services.register(FluentPostgreSQLProvider())
+        
+        services.register(Sessions.self) { container -> KeyedCacheSessions in
+            let keyedCache = try container.keyedCache(for: .redis)
+            return KeyedCacheSessions(keyedCache: keyedCache)
+        }
         
         // assetmanager
         services.register(AssetManager())
