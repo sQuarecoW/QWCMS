@@ -29,7 +29,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "QWCMS",
-            dependencies: ["Vapor", "Leaf", "FluentPostgreSQL", "Authentication"]),
+            dependencies: ["Vapor", "Leaf", "FluentPostgreSQL", "Authentication", "Redis"]),
         .testTarget(
             name: "QWCMSTests",
             dependencies: ["QWCMS"]),
