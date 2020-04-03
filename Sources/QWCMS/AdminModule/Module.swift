@@ -6,24 +6,29 @@
 //
 
 import Vapor
-import FluentPostgreSQL
+import FluentPostgresDriver
 
 public struct AdminModule: CMSModule {
     
     public let routePrefix = ""
     
-    public init() {}
+    public let application: Application
     
-    public func addRoutes(to router: CMSRouter) throws {
+    public init(application: Application) {
+        self.application = application
+        
+        addRoutes(to: application)
+    }
+    
+    func addRoutes(to app: Application) {
         
         // admin routes
-        let adminRouteGroup = router.adminRouter
-        adminRouteGroup.get("/", use: adminDashboardHandler)
+        app.adminRoutes.get("/", use: adminDashboardHandler)
     }    
 }
 
-func adminDashboardHandler(_ req: Request) throws -> Future<View> {
-    return try req.view().render("admin/base", "")
+func adminDashboardHandler(_ req: Request) throws -> EventLoopFuture<View> {
+    return req.view.render("admin")
 }
 
 

@@ -7,27 +7,27 @@
 
 import Vapor
 
-public class CurrentRequest: Service {
-    
-    var language: String = ""
-    
-    var httpProtocol: String = "http://"
-    var host: String = ""
-    
-    var siteUrl: String = ""
-    
-    public init() {}
-    
-    var userInfo: [AnyHashable: Any] {
-        let mirror = Mirror(reflecting: self)
-        var userInfo: [AnyHashable: Any] = [:]
-        
-        for (k, v) in mirror.children {
-            if let key = k {
-                userInfo[key] = v
-            }
-        }
-        
-        return userInfo
-    }
-}
+//public class CurrentRequest: Service {
+//    
+//    var language: String = ""
+//    
+//    var httpProtocol: String = "http://"
+//    var host: String = ""
+//    
+//    var siteUrl: String = ""
+//    
+//    public init() {}
+//    
+//    var userInfo: [AnyHashable: Any] {
+//        let mirror = Mirror(reflecting: self)
+//        var userInfo: [AnyHashable: Any] = [:]
+//        
+//        for (k, v) in mirror.children {
+//            if let key = k {
+//                userInfo[key] = v
+//            }
+//        }
+//        
+//        return userInfo
+//    }
+//}
